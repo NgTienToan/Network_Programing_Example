@@ -1,12 +1,13 @@
-package network.programing.thread;
+package network.programing.server.thread;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import network.programing.server.util.Constant;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public class Server {
     private int port;
@@ -78,6 +79,42 @@ public class Server {
     }
 
     /**
+     * send file method
+     */
+    private void sendFile(String toUser, String fileName) {
+        Socket sendToSocket = null;
+        String fileSource = Constant.PUBLIC_SOURCE + "/" + fileName;
+
+        try {
+            if(hasUsers(toUser)) {
+                sendToSocket = userThreads.get(toUser).getSocket();
+                OutputStream os = sendToSocket.getOutputStream();
+
+                File file = new File(fileSource);
+                FileInputStream fis = new FileInputStream(file);
+                byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
+
+                System.out.println("Start transfer file...");
+                int fileSize = (int) file.length(), current = 0;
+                int byteRead;
+                do {
+                    byteRead = fis.read(data);
+                    os.write(data, 0, byteRead);
+                    os.flush();
+                    if (byteRead >= 0) {
+                        current += byteRead;
+                    }
+                } while (current != fileSize);
+
+                System.out.println("Transfer Done");
+                fis.close();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    /**
      * log user online
      */
     public void logUserOnline() {
@@ -89,5 +126,26 @@ public class Server {
             userOnline.append(element.getKey() + "\n");
         });
         broadcast(userOnline.toString(), null);
+    }
+
+    /**
+     * log all file user upload
+     */
+    public void logPublicFile(String toUser) {
+        StringBuilder allFiles = new StringBuilder();
+        //Creating a File object for directory
+        File directoryPath = new File(Constant.PUBLIC_SOURCE);
+        //List of all files and directories
+        File[] filesList = directoryPath.listFiles();
+        System.out.println("List of files and directories in the specified directory:");
+        for(File file : Objects.requireNonNull(filesList)) {
+            System.out.println("File name: "+file.getName());
+            System.out.println("File path: "+file.getAbsolutePath());
+            System.out.println("Size :"+file.getTotalSpace());
+            System.out.println(" ");
+            allFiles.append(file.getName()).append("\n");
+        }
+
+        broadcast(allFiles.toString(), toUser);
     }
 }

@@ -1,4 +1,4 @@
-package network.programing.thread;
+package network.programing.server.thread;
 
 import java.io.*;
 import java.net.Socket;
@@ -34,6 +34,9 @@ class UserThread extends Thread {
                 String toUser = null;
                 StringBuffer strBuff = new StringBuffer();
                 try {
+                    if(clientMessage.equalsIgnoreCase("DOWNLOAD FILE")) {
+                        server.logPublicFile(this.userID);
+                    }
                     toUser = clientMessage.substring(clientMessage.indexOf('[') + 1, clientMessage.indexOf(']'));
                     strBuff.append(clientMessage);
                     strBuff.delete(clientMessage.indexOf('['), clientMessage.indexOf(']') + 1);
@@ -79,5 +82,13 @@ class UserThread extends Thread {
      */
     void sendMessage(String message) {
         writer.println(message);
+    }
+
+    /**
+     * get socket
+     * @return socket
+     */
+    public Socket getSocket() {
+        return socket;
     }
 }

@@ -1,12 +1,11 @@
-package network.programing;
+package network.programing.server;
 
-import network.programing.thread.Server;
+import network.programing.server.thread.Server;
+import network.programing.server.util.Constant;
 
 public class ServerApplication {
     public static void main(String[] args) {
-        int port = 9000;
-
-        Server server = new Server(port);
+        Server server = new Server(Constant.LISTEN_PORT);
         server.execute();
     }
 }
