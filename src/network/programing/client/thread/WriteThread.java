@@ -11,10 +11,12 @@ class WriteThread extends Thread {
     private PrintWriter writer;
     private Socket socket;
     private Client client;
+    private ReadThread readThread;
 
-    public WriteThread(Socket socket, Client client) {
+    public WriteThread(Socket socket, Client client, ReadThread readThread) {
         this.socket = socket;
         this.client = client;
+        this.readThread = readThread;
 
         try {
             OutputStream output = socket.getOutputStream();
@@ -40,8 +42,9 @@ class WriteThread extends Thread {
         do {
             text = scanner.nextLine();
             if(text.toUpperCase().startsWith("[DOWNLOAD]")) {
-                FileDownloadThread fileDownloadThread = new FileDownloadThread(this.socket);
-                fileDownloadThread.run();
+                message = "~" + userID + "~" + text;
+                readThread.downloadFileFlag = true;
+                writer.println(message);
             }
             message = "~" + userID + "~" + text;
             writer.println(message);

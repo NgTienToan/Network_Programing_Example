@@ -10,22 +10,28 @@ import java.net.Socket;
 public class FileTransferThread extends Thread {
     private Socket sendToSocket;
     private File file;
+    private String filename;
 
-
-    public FileTransferThread(Socket sendToSocket, File file) {
+    public FileTransferThread(Socket sendToSocket, File file, String fileName) {
         this.sendToSocket = sendToSocket;
         this.file = file;
+        this.filename = fileName;
     }
 
     public void run() {
         try {
-            System.out.println("asdasd");
             OutputStream os = sendToSocket.getOutputStream();
             FileInputStream fis = new FileInputStream(file);
             byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
 
             System.out.println("Start transfer file...");
+            os.write(filename.getBytes(), 0, filename.length());
+            System.out.println("file name: " + filename);
+
             int fileSize = (int) file.length(), current = 0;
+            os.write(Integer.toString(fileSize).getBytes(), 0, String.valueOf(fileSize).length());
+            System.out.println("file size:"  + fileSize);
+
             int byteRead;
             do {
                 byteRead = fis.read(data);
@@ -39,7 +45,7 @@ public class FileTransferThread extends Thread {
             System.out.println("Transfer Done");
             fis.close();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         this.interrupt();

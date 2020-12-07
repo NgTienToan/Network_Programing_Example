@@ -1,5 +1,7 @@
 package network.programing.server.thread;
 
+import network.programing.server.util.Constant;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -35,6 +37,7 @@ class UserThread extends Thread {
                 StringBuffer strBuff = new StringBuffer();
 
                 try {
+                    String temp = clientMessage.toUpperCase();
                     if(clientMessage.toUpperCase().contains("[FILE LIST]")) {
                         server.logPublicFile(this.userID);
                     }
@@ -46,8 +49,8 @@ class UserThread extends Thread {
                         stringBuilder.delete(0, (clientMessage.indexOf("[DOWNLOAD]") + 11));
                         System.out.println(stringBuilder);
 
-                        File file = new File(stringBuilder.toString());
-                        FileTransferThread fileTransferThread = new FileTransferThread(this.socket,file);
+                        File file = new File(Constant.PUBLIC_SOURCE + "/" + stringBuilder.toString());
+                        FileTransferThread fileTransferThread = new FileTransferThread(this.socket,file, stringBuilder.toString());
                         fileTransferThread.run();
                     }
                     else {
