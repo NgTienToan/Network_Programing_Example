@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public class Server {
     private int port;
@@ -119,11 +118,11 @@ public class Server {
      */
     public void logUserOnline() {
         StringBuffer userOnline = new StringBuffer();
-        userOnline.append("user online:\n");
+        userOnline.append("user online:");
         System.out.println("user online:");
         userThreads.entrySet().stream().forEach(element -> {
             System.out.println(element.getKey());
-            userOnline.append(element.getKey() + "\n");
+            userOnline.append("\n").append(element.getKey());
         });
         broadcast(userOnline.toString(), null);
     }
@@ -133,6 +132,7 @@ public class Server {
      */
     public void logPublicFile(String toUser) {
         StringBuilder allFiles = new StringBuilder();
+        allFiles.append("Files: ");
         //Creating a File object for directory
         File directoryPath = new File(Constant.PUBLIC_SOURCE);
         //List of all files and directories
@@ -143,7 +143,7 @@ public class Server {
             System.out.println("File path: "+file.getAbsolutePath());
             System.out.println("Size :"+file.getTotalSpace());
             System.out.println(" ");
-            allFiles.append(file.getName()).append("\n");
+            allFiles.append("\n").append(file.getName());
         }
 
         broadcast(allFiles.toString(), toUser);

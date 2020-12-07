@@ -28,7 +28,8 @@ class WriteThread extends Thread {
     public void run() {
         String userID;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter your name: ");
+        System.out.println("Enter your name: ");
+
         userID = scanner.nextLine();
         client.setuserID(userID);
         writer.println(userID);
@@ -38,6 +39,10 @@ class WriteThread extends Thread {
 
         do {
             text = scanner.nextLine();
+            if(text.toUpperCase().startsWith("[DOWNLOAD]")) {
+                FileDownloadThread fileDownloadThread = new FileDownloadThread(this.socket);
+                fileDownloadThread.run();
+            }
             message = "~" + userID + "~" + text;
             writer.println(message);
         } while (!text.equals("bye"));
@@ -45,7 +50,6 @@ class WriteThread extends Thread {
         try {
             socket.close();
         } catch (IOException ex) {
-
             System.out.println("Error writing to server: " + ex.getMessage());
         }
     }

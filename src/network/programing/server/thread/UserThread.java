@@ -33,13 +33,28 @@ class UserThread extends Thread {
                 clientMessage = reader.readLine();
                 String toUser = null;
                 StringBuffer strBuff = new StringBuffer();
+
                 try {
-                    if(clientMessage.equalsIgnoreCase("DOWNLOAD FILE")) {
+                    if(clientMessage.toUpperCase().contains("[FILE LIST]")) {
                         server.logPublicFile(this.userID);
                     }
-                    toUser = clientMessage.substring(clientMessage.indexOf('[') + 1, clientMessage.indexOf(']'));
-                    strBuff.append(clientMessage);
-                    strBuff.delete(clientMessage.indexOf('['), clientMessage.indexOf(']') + 1);
+                    else if(clientMessage.toUpperCase().contains("[DOWNLOAD]")) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.append(clientMessage);
+                        System.out.println(stringBuilder.length());
+                        System.out.println(clientMessage.indexOf("[DOWNLOAD]"));
+                        stringBuilder.delete(0, (clientMessage.indexOf("[DOWNLOAD]") + 11));
+                        System.out.println(stringBuilder);
+
+                        File file = new File(stringBuilder.toString());
+                        FileTransferThread fileTransferThread = new FileTransferThread(this.socket,file);
+                        fileTransferThread.run();
+                    }
+                    else {
+                        toUser = clientMessage.substring(clientMessage.indexOf('[') + 1, clientMessage.indexOf(']'));
+                        strBuff.append(clientMessage);
+                        strBuff.delete(clientMessage.indexOf('['), clientMessage.indexOf(']') + 1);
+                    }
                 }
                 catch(StringIndexOutOfBoundsException e) {
                     if(!clientMessage.equals("bye")) sendMessage("Wrong syntax!");
