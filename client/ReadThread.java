@@ -1,6 +1,3 @@
-package network.programing.client.thread;
-
-import network.programing.client.util.Constant;
 
 import java.io.*;
 import java.net.Socket;

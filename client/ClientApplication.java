@@ -1,8 +1,6 @@
-package network.programing.client;
 
-import network.programing.client.thread.Client;
-
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class ClientApplication {
     public static void main(String[] args) {

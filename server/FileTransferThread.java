@@ -1,11 +1,6 @@
-package network.programing.server.thread;
 
-import network.programing.server.util.Constant;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 public class FileTransferThread extends Thread {
     private Socket sendToSocket;

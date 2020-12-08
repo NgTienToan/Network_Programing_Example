@@ -1,9 +1,6 @@
-package network.programing.server.thread;
-
-import network.programing.server.util.Constant;
 
 import java.io.*;
-import java.net.Socket;
+import java.net.*;
 
 class UserThread extends Thread {
     private Socket socket;

@@ -1,12 +1,7 @@
-package network.programing.server.thread;
-
-import network.programing.server.util.Constant;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Hashtable;
-import java.util.Objects;
+import java.net.*;
+import java.util.*;
 
 public class Server {
     private int port;

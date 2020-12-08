@@ -1,8 +1,6 @@
-package network.programing.client.thread;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
 
 public class Client {
     private String hostname;

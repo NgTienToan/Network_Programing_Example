@@ -1,5 +1,3 @@
-package network.programing.client.thread;
-
 import java.io.Console;
 import java.io.IOException;
 import java.io.OutputStream;
