@@ -77,41 +77,41 @@ public class Server {
         return (userThreads.get(userID) != null);
     }
 
-    /**
-     * send file method
-     */
-    private void sendFile(String toUser, String fileName) {
-        Socket sendToSocket = null;
-        String fileSource = Constant.PUBLIC_SOURCE + "/" + fileName;
-
-        try {
-            if(hasUsers(toUser)) {
-                sendToSocket = userThreads.get(toUser).getSocket();
-                OutputStream os = sendToSocket.getOutputStream();
-
-                File file = new File(fileSource);
-                FileInputStream fis = new FileInputStream(file);
-                byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
-
-                System.out.println("Start transfer file...");
-                int fileSize = (int) file.length(), current = 0;
-                int byteRead;
-                do {
-                    byteRead = fis.read(data);
-                    os.write(data, 0, byteRead);
-                    os.flush();
-                    if (byteRead >= 0) {
-                        current += byteRead;
-                    }
-                } while (current != fileSize);
-
-                System.out.println("Transfer Done");
-                fis.close();
-            }
-        } catch (Exception e) {
-
-        }
-    }
+//    /**
+//     * send file method
+//     */
+//    private void sendFile(String toUser, String fileName) {
+//        Socket sendToSocket = null;
+//        String fileSource = Constant.PUBLIC_SOURCE + "/" + fileName;
+//
+//        try {
+//            if(hasUsers(toUser)) {
+//                sendToSocket = userThreads.get(toUser).getSocket();
+//                OutputStream os = sendToSocket.getOutputStream();
+//
+//                File file = new File(fileSource);
+//                FileInputStream fis = new FileInputStream(file);
+//                byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
+//
+//                System.out.println("Start transfer file...");
+//                int fileSize = (int) file.length(), current = 0;
+//                int byteRead;
+//                do {
+//                    byteRead = fis.read(data);
+//                    os.write(data, 0, byteRead);
+//                    os.flush();
+//                    if (byteRead >= 0) {
+//                        current += byteRead;
+//                    }
+//                } while (current != fileSize);
+//
+//                System.out.println("Transfer Done");
+//                fis.close();
+//            }
+//        } catch (Exception e) {
+//
+//        }
+//    }
 
     /**
      * log user online

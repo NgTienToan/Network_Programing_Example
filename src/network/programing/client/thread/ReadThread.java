@@ -27,19 +27,21 @@ class ReadThread extends Thread {
 
     public void run() {
         while (true) {
-            if(downloadFileFlag) receiveFile();
-            else {
-                try {
-                    String response = reader.readLine();
-                    System.out.println(response);
-                    if(response == null) {
+            try {
+                String response = reader.readLine();
+                System.out.println(response);
+                if(!downloadFileFlag) {
+                    if (response == null) {
                         System.out.println("disconect to server");
                         break;
                     }
-                } catch (IOException ex) {
-                    System.out.println("Error reading from server: " + ex.getMessage());
-                    break;
                 }
+                else {
+                    receiveFile();
+                }
+            } catch (IOException ex) {
+                System.out.println("Error reading from server: " + ex.getMessage());
+                break;
             }
         }
     }
@@ -54,29 +56,30 @@ class ReadThread extends Thread {
             filename = dis.readLine();
             System.out.println("file name: " + filename);
             fileSize = dis.readInt();
-            System.out.println("size_file: " + fileSize);
+            System.out.println("file size: " + fileSize);
 
-            FileOutputStream fos = new FileOutputStream(filename);
+            File file = new File(filename);
+            FileOutputStream fos = new FileOutputStream(file);
             DataOutputStream dos = new DataOutputStream(fos);
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
-            dos.writeUTF(filename);
-            dos.writeInt(fileSize);
-            dos.flush();
+//            dos.writeUTF(filename);
+//            dos.writeInt(fileSize);
+//            dos.flush();
+            writer.println("[START]");
             byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
             int byteRead, current = 0;
             do {
                 byteRead = dis.read(data);
+                System.out.println(new String(data));
                 fos.write(data, 0, byteRead);
                 if (byteRead >= 0) {
                     current += byteRead;
                 }
 
-            } while (current != fileSize);
+            } while (current <= fileSize);
             System.out.println("RECEIVE FILE DONE!");
             fos.flush();
-            dis.close();
-            is.close();
-            dos.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
