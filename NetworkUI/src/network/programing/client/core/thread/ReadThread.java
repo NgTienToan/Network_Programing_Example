@@ -1,7 +1,6 @@
-package network.programing.client.thread;
+package network.programing.client.core.thread;
 
-import network.programing.client.util.Constant;
-
+import network.programing.client.core.util.Constant;
 import java.io.*;
 import java.net.Socket;
 
@@ -9,12 +8,14 @@ class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
     private Client client;
-    private InputStream is = null;
+    private InputStream is;
+    private OutputStream outputStream;
     public boolean downloadFileFlag = false;
 
-    public ReadThread(Socket socket, Client client) {
+    public ReadThread(Socket socket, Client client, OutputStream outputStream) {
         this.socket = socket;
         this.client = client;
+        this.outputStream = outputStream;
 
         try {
             InputStream input = socket.getInputStream();
@@ -30,7 +31,6 @@ class ReadThread extends Thread {
             try {
                 String response = reader.readLine();
                 System.out.println(response);
-
                 if(!downloadFileFlag) {
                     if (response == null) {
                         System.out.println("disconect to server");
@@ -64,9 +64,7 @@ class ReadThread extends Thread {
             DataOutputStream dos = new DataOutputStream(fos);
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
-//            dos.writeUTF(filename);
-//            dos.writeInt(fileSize);
-//            dos.flush();
+
             writer.println("[START]");
             byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
             int byteRead, current = 0;

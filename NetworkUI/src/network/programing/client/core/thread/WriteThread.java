@@ -1,7 +1,7 @@
-package network.programing.client.thread;
+package network.programing.client.core.thread;
 
-import java.io.Console;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -12,11 +12,21 @@ class WriteThread extends Thread {
     private Socket socket;
     private Client client;
     private ReadThread readThread;
+    private String username;
+    private InputStream inputStream;
 
-    public WriteThread(Socket socket, Client client, ReadThread readThread) {
+    public WriteThread(
+            Socket socket,
+            Client client,
+            ReadThread readThread,
+            String username,
+            InputStream inputStream
+    ) {
         this.socket = socket;
         this.client = client;
         this.readThread = readThread;
+        this.username = username;
+        this.inputStream = inputStream;
 
         try {
             OutputStream output = socket.getOutputStream();
@@ -29,14 +39,11 @@ class WriteThread extends Thread {
 
     public void run() {
         String userID;
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your name: ");
 
         userID = scanner.nextLine();
         client.setuserID(userID);
-
-        // gửi userID cho server
         writer.println(userID);
 
         String text;

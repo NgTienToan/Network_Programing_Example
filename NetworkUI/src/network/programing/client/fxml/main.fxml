@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="1087.0" style="-fx-background-color: #2F2B43;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="network.programing.client.controller.MainController">
+    <children>
+        <AnchorPane prefHeight="519.0" prefWidth="262.0" style="-fx-background-color: #393351;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox fx:id="onlinePersonBox" layoutY="160.0" prefHeight="356.0" prefWidth="262.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="160.0">
+                    <children>
+                  <ListView fx:id="userListBox" prefHeight="595.0" prefWidth="262.0" />
+                    </children>
+                </VBox>
+                <Pane layoutY="86.0" prefHeight="61.0" prefWidth="262.0" style="-fx-background-color: #FA2C56; -fx-background-radius: 5;">
+                    <children>
+                        <Label layoutX="25.0" layoutY="17.0" text="Online Users:" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </Pane>
+            </children></AnchorPane>
+        <Pane layoutX="262.0" prefHeight="649.0" prefWidth="631.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="262.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane layoutX="561.0" prefHeight="649.0" prefWidth="262.0" style="-fx-background-color: #393351;">
+                    <children>
+                        <Pane layoutY="86.0" prefHeight="61.0" prefWidth="262.0" style="-fx-background-color: #FA2C56; -fx-background-radius: 5;">
+                            <children>
+                                <Label layoutX="25.0" layoutY="17.0" text="Files" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </Pane>
+                  <Button fx:id="closeMainButton" layoutX="225.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#onCloseMainWindow" prefHeight="27.0" prefWidth="37.0" styleClass="button3" stylesheets="@../../../../css/fullpackstyling.css" text="X" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <ListView fx:id="fileListBox" layoutY="157.0" prefHeight="492.0" prefWidth="262.0" />
+                    </children>
+                </AnchorPane>
+            <TextField fx:id="messsageInput" layoutY="599.0" prefHeight="49.0" prefWidth="479.0" styleClass="text" stylesheets="@../../../../css/fullpackstyling.css" text="Enter Message..">
+               <font>
+                  <Font size="16.0" />
+               </font></TextField>
+            <Button layoutX="478.0" layoutY="599.0" mnemonicParsing="false" onMouseClicked="#sendButtonAction" prefHeight="49.0" prefWidth="82.0" text="SEND" />
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

@@ -16,20 +16,27 @@ public class Server {
         this.port = port;
     }
 
-    public synchronized void execute() {
+    public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
             System.out.println("Chat Server is listening on port " + port);
 
+            // run socket
             while (true) {
+                // stop and wait to client connect
                 Socket socket = serverSocket.accept();
                 System.out.println("New user connected");
 
+                // Lấy dữ liệu từ client gửi đến
                 InputStream input = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+                // wait data from client
+                // lấy userID mà client gửi
                 String userID = reader.readLine();
 
                 UserThread newUser = new UserThread(socket, this, userID);
+
                 userThreads.put(userID, newUser);
                 newUser.start();
             }
