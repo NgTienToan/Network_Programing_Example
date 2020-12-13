@@ -1,4 +1,6 @@
 # Network Programing Example
+#Version console 
+#0.0.1
 
 Giao thức giao tiếp giữa client và server:
 
