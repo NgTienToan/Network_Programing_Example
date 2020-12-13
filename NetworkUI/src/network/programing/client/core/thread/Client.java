@@ -1,5 +1,7 @@
 package network.programing.client.core.thread;
 
+import network.programing.client.controller.MainController;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -11,20 +13,19 @@ public class Client {
     private String userID;
     private InputStream inputStream;
     private OutputStream outputStream;
+    private final MainController controller;
     List<String> userOnline;
 
     public Client(
             String hostname,
             int port,
             String username,
-            InputStream inputStream,
-            OutputStream outputStream
+            MainController controller
     ) {
         this.hostname = hostname;
         this.port = port;
         this.userID = username;
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+        this.controller = controller;
     }
 
     public void execute() {
@@ -32,9 +33,9 @@ public class Client {
             Socket socket = new Socket(hostname, port);
             System.out.println("Connected to the chat server");
 
-            ReadThread readThread = new ReadThread(socket, this, outputStream);
+            ReadThread readThread = new ReadThread(socket, this, outputStream, this.controller);
             readThread.start();
-            new WriteThread(socket, this, readThread, userID, inputStream).start();
+            new WriteThread(socket, this, readThread, userID, inputStream, this.controller).start();
 
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());

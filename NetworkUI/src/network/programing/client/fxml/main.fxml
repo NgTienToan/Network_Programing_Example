@@ -49,7 +49,7 @@
                   <ListView fx:id="fileListBox" layoutY="157.0" prefHeight="492.0" prefWidth="262.0" />
                     </children>
                 </AnchorPane>
-            <TextField fx:id="messsageInput" layoutY="599.0" prefHeight="49.0" prefWidth="479.0" styleClass="text" stylesheets="@../../../../css/fullpackstyling.css" text="Enter Message..">
+            <TextField fx:id="messsageInput" layoutY="599.0" prefHeight="49.0" prefWidth="479.0" promptText="Enter Message.." styleClass="text" stylesheets="@../../../../css/fullpackstyling.css">
                <font>
                   <Font size="16.0" />
                </font></TextField>

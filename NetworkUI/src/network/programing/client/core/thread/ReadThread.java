@@ -1,8 +1,12 @@
 package network.programing.client.core.thread;
 
+import network.programing.client.controller.MainController;
 import network.programing.client.core.util.Constant;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class ReadThread extends Thread {
     private BufferedReader reader;
@@ -11,11 +15,18 @@ class ReadThread extends Thread {
     private InputStream is;
     private OutputStream outputStream;
     public boolean downloadFileFlag = false;
+    private final MainController controller;
 
-    public ReadThread(Socket socket, Client client, OutputStream outputStream) {
+    public ReadThread(
+            Socket socket,
+            Client client,
+            OutputStream outputStream,
+            MainController controller
+    ) {
         this.socket = socket;
         this.client = client;
         this.outputStream = outputStream;
+        this.controller = controller;
 
         try {
             InputStream input = socket.getInputStream();
@@ -35,6 +46,13 @@ class ReadThread extends Thread {
                     if (response == null) {
                         System.out.println("disconect to server");
                         break;
+                    }
+                    else {
+                        if(response.contains("[ONLINE USER]")) {
+                            String[] listUser = response.substring(15, response.length() - 1).split(",");
+                            List<String> onlineUsers = new ArrayList<>(Arrays.asList(listUser));
+                            controller.setUserList(onlineUsers);
+                        }
                     }
                 }
                 else {

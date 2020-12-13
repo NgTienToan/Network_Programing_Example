@@ -125,12 +125,16 @@ public class Server {
      */
     public void logUserOnline() {
         StringBuffer userOnline = new StringBuffer();
-        userOnline.append("user online:");
-        System.out.println("user online:");
+        userOnline.append("[ONLINE USER]:");
+        System.out.println("[ONLINE USER]:");
+        userOnline.append("[");
         userThreads.entrySet().stream().forEach(element -> {
             System.out.println(element.getKey());
-            userOnline.append("\n").append(element.getKey());
+            userOnline.append(element.getKey()).append(",");
         });
+        userOnline.delete(userOnline.length() - 1, userOnline.length());
+        userOnline.append("]");
+        System.out.println(userOnline);
         broadcast(userOnline.toString(), null);
     }
 

@@ -26,9 +26,9 @@ public class CellRenderer implements Callback<ListView<String>,ListCell<String>>
                 if (user != null) {
                     HBox hBox = new HBox();
 
-                    Text name = new Text(user);
+                    Text name = new Text("   " + user);
                     ImageView pictureImageView = new ImageView();
-                    Image image = new Image(getClass().getClassLoader().getResource("../images/avatar.png").toString(),50,50,true,true);
+                    Image image = new Image(getClass().getClassLoader().getResource("avatar.png").toString(),50,50,true,true);
                     pictureImageView.setImage(image);
 
                     hBox.getChildren().addAll(pictureImageView, name);
