@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="NetworkUI">
+    <output-path>$PROJECT_DIR$/out/artifacts/NetworkUI</output-path>
+    <root id="root">
+      <element id="archive" name="NetworkUI.jar">
+        <element id="module-output" name="NetworkUI" />
+      </element>
+    </root>
+  </artifact>
+</component>
