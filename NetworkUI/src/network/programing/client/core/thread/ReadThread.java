@@ -1,5 +1,6 @@
 package network.programing.client.core.thread;
 
+import javafx.application.Platform;
 import network.programing.client.controller.MainController;
 import network.programing.client.core.util.Constant;
 import java.io.*;
@@ -8,13 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class ReadThread extends Thread {
+public class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
     private Client client;
     private InputStream is;
     private OutputStream outputStream;
-    public boolean downloadFileFlag = false;
+    public static boolean downloadFileFlag = false;
     private final MainController controller;
 
     public ReadThread(
@@ -41,17 +42,35 @@ class ReadThread extends Thread {
         while (true) {
             try {
                 String response = reader.readLine();
-                System.out.println(response);
-                if(!downloadFileFlag) {
-                    if (response == null) {
-                        System.out.println("disconect to server");
-                        break;
+                System.out.println("response from server: " + response);
+                if(response.equals(Constant.FILE_NOT_FOUND)) {
+                    downloadFileFlag = false;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            controller.showWarningFileNotFound();
+                        }
+                    });
+                }
+                else if(!downloadFileFlag) {
+                    if (response != null && response.contains("~")) {
+                        String fromUser = response.substring(response.indexOf('~') + 1, response.indexOf('~', 1));
+
+                        StringBuilder strBuff= new StringBuilder().append(response);
+                        strBuff.delete(response.indexOf('~'), response.indexOf('~', 1) + 1);
+                        strBuff.delete(0,1);
+                        controller.addToChat(fromUser, strBuff.toString(), false, true);
                     }
                     else {
                         if(response.contains("[ONLINE USER]")) {
                             String[] listUser = response.substring(15, response.length() - 1).split(",");
                             List<String> onlineUsers = new ArrayList<>(Arrays.asList(listUser));
                             controller.setUserList(onlineUsers);
+                        }
+                        else if(response.contains("[FILES]")) {
+                            String[] listFile =  response.substring(9, response.length() - 1).split(",");
+                            List<String> allFile = new ArrayList<>(Arrays.asList(listFile));
+                            controller.setFileList(allFile);
                         }
                     }
                 }
@@ -73,30 +92,45 @@ class ReadThread extends Thread {
             int fileSize;
 
             filename = dis.readLine();
-            System.out.println("file name: " + filename);
-            fileSize = dis.readInt();
-            System.out.println("file size: " + fileSize);
-
-            File file = new File(filename);
-            FileOutputStream fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(fos);
-            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            if(!filename.equals(Constant.FILE_NOT_FOUND)) {
+                fileSize = dis.readInt();
+                File file = new File(filename);
+                FileOutputStream fos = new FileOutputStream(file);
+                DataOutputStream dos = new DataOutputStream(fos);
+                PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
 
-            writer.println("[START]");
-            byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
-            int byteRead, current = 0;
-            do {
-                byteRead = dis.read(data);
-                System.out.println(new String(data));
-                fos.write(data, 0, byteRead);
-                if (byteRead >= 0) {
-                    current += byteRead;
-                }
+                writer.println("[START]");
+                byte[] data = new byte[Constant.BUFFER_FILE_TRANSFER];
+                int byteRead, current = 0;
+                do {
+                    byteRead = dis.read(data);
+                    System.out.println(new String(data));
+                    fos.write(data, 0, byteRead);
+                    if (byteRead >= 0) {
+                        current += byteRead;
+                    }
 
-            } while (current <= fileSize);
-            System.out.println("RECEIVE FILE DONE!");
-            fos.flush();
+                } while (current <= fileSize);
+                System.out.println("RECEIVE FILE DONE!");
+                fos.flush();
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.downloadedSuccess();
+                    }
+                });
+            }
+            else {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.showWarningFileNotFound();
+                    }
+                });
+            }
+
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {

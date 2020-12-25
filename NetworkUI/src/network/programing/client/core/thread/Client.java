@@ -1,6 +1,7 @@
 package network.programing.client.core.thread;
 
 import network.programing.client.controller.MainController;
+import network.programing.client.core.util.Constant;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,8 +12,6 @@ public class Client {
     private String hostname;
     private int port;
     private String userID;
-    private InputStream inputStream;
-    private OutputStream outputStream;
     private final MainController controller;
     List<String> userOnline;
 
@@ -28,28 +27,24 @@ public class Client {
         this.controller = controller;
     }
 
-    public void execute() {
-        try {
+    public void execute() throws UnknownHostException, IOException {
             Socket socket = new Socket(hostname, port);
             System.out.println("Connected to the chat server");
-
-            ReadThread readThread = new ReadThread(socket, this, outputStream, this.controller);
+            OutputStream output = socket.getOutputStream();
+            controller.setOutputStream(output);
+            controller.setUserID(userID);
+            ReadThread readThread = new ReadThread(socket, this, output, this.controller);
             readThread.start();
-            new WriteThread(socket, this, readThread, userID, inputStream, this.controller).start();
 
-        } catch (UnknownHostException ex) {
-            System.out.println("Server not found: " + ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println("I/O Error: " + ex.getMessage());
-        }
-
+            PrintWriter writer = new PrintWriter(output, true);
+            writer.println(userID);
     }
 
     void setuserID(String userID) {
         this.userID = userID;
     }
 
-    String getuserID() {
+    public String getuserID() {
         return this.userID;
     }
 

@@ -11,7 +11,7 @@
     <children>
         <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="467.0" prefWidth="745.0" styleClass="linear-grad" stylesheets="@../../../../css/fullpackstyling.css" AnchorPane.bottomAnchor="1.0" AnchorPane.topAnchor="-1.0">
             <children>
-                <TextField fx:id="portInput" layoutX="224.0" layoutY="200.0" prefHeight="34.0" prefWidth="275.0" promptText="Port" styleClass="cell" stylesheets="@../../../../css/fullpackstyling.css">
+                <TextField fx:id="portInput" layoutX="224.0" layoutY="200.0" prefHeight="34.0" prefWidth="275.0" promptText="Port" styleClass="cell" stylesheets="@../../../../css/fullpackstyling.css" text="8989">
                <font>
                   <Font size="19.0" />
                </font></TextField>
@@ -27,12 +27,12 @@
                <font>
                   <Font size="19.0" />
                </font></Button>
-            <TextField fx:id="hostInput" layoutX="224.0" layoutY="145.0" prefHeight="34.0" prefWidth="275.0" promptText="Host name" styleClass="cell" stylesheets="@../../../../css/fullpackstyling.css">
+            <TextField fx:id="hostInput" layoutX="224.0" layoutY="145.0" prefHeight="34.0" prefWidth="275.0" promptText="Host name" styleClass="cell" stylesheets="@../../../../css/fullpackstyling.css" text="localhost">
                <font>
                   <Font size="19.0" />
                </font>
             </TextField>
-            <TextField fx:id="userNameInput" layoutX="224.0" layoutY="89.0" prefHeight="34.0" prefWidth="275.0" promptText="User name" styleClass="cell" stylesheets="@../../../../css/fullpackstyling.css">
+            <TextField fx:id="userNameInput" layoutX="224.0" layoutY="89.0" prefHeight="34.0" prefWidth="275.0" promptText="User name" styleClass="cell" stylesheets="@../../../../css/fullpackstyling.css" text="namph">
                <font>
                   <Font size="19.0" />
                </font>
